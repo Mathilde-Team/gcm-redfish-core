@@ -3,7 +3,10 @@
 # Prérequis : environnement avec le paquet installé (uv pip install -e ".[dev]").
 .PHONY: test
 
-PYTHON ?= python
+# `coverage run` (script) et non `python -m coverage run` : sous Python 3.10,
+# la forme -m ne place pas tests/ dans sys.path et les imports entre scripts
+# de tests (test_redfish_client_erreurs → test_redfish_client) échouent.
+COVERAGE ?= coverage
 
 # Tests lancés comme des scripts (sans pytest, gcm-redfish-core#7), sauf le
 # test du script du socle check_branch_protection.py repris de modele-depot
@@ -18,7 +21,7 @@ TESTS_SCRIPTS = \
 
 test:
 	rm -f .coverage .coverage.*
-	set -e; for t in $(TESTS_SCRIPTS); do $(PYTHON) -m coverage run $$t; done
-	$(PYTHON) -m coverage run -m pytest -q tests/test_check_branch_protection.py
-	$(PYTHON) -m coverage combine
-	$(PYTHON) -m coverage report
+	set -e; for t in $(TESTS_SCRIPTS); do $(COVERAGE) run $$t; done
+	$(COVERAGE) run -m pytest -q tests/test_check_branch_protection.py
+	$(COVERAGE) combine
+	$(COVERAGE) report
