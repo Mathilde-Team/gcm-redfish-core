@@ -66,10 +66,37 @@ Aucun matériel Redfish réel n'est nécessaire : les tests utilisent un faux
 transport HTTP simulant les réponses standard DMTF.
 
 ```bash
-python tests/test_engine.py
-python tests/test_catalog_import.py
-python tests/test_redfish_client.py
+pip install -e ".[dev]"
+make test      # tous les tests sous coverage, seuil 95 % lignes + branches
 ```
+
+`make test` est la commande du job « Qualité (lint, tests) » de la CI : le
+seuil est lu dans `pyproject.toml` (`[tool.coverage.report] fail_under`).
+Un script de test isolé se lance aussi directement, par exemple
+`python tests/test_engine.py`.
+
+## Socle qualité Mathilde-Team
+
+Le dépôt suit le [socle qualité](https://github.com/Mathilde-Team/.github/blob/main/SOCLE.md) :
+
+| Fichier | Rôle |
+|---|---|
+| `.github/workflows/ci.yml` | Job « Qualité (lint, tests) » (yamllint, syntaxe des scripts, `make test`) et tests Python 3.10 / 3.11 |
+| `.github/workflows/guard-main.yml` | Refuse toute PR vers `main` qui ne vient pas de `dev` |
+| `.github/workflows/branch-protection.yml` | Compare chaque jour la protection réelle de `main` et `dev` aux règles versionnées |
+| `.github/branch-protection/{main,dev}.json` | Règles de protection, applicables telles quelles par un administrateur |
+| `.github/workflows/maj-branches.yml` | Met à jour les PR vers `dev` à chaque avancée de `dev` |
+| `.github/workflows/desassignation.yml` | Retire les assignés inactifs depuis 24 h |
+
+Mise en place restante, réservée à un administrateur (audit Mathilde-Team/.github#1) :
+
+1. renommer la branche par défaut `master` en `main` (Settings → Branches) ;
+2. lancer `scripts/appliquer_socle.sh Mathilde-Team/gcm-redfish-core` depuis
+   `Mathilde-Team/.github` : création de `dev` et application des protections
+   versionnées ici.
+
+Ensuite, toutes les PR ciblent `dev`, et `main` n'est alimentée que par une
+PR `dev` → `main`.
 
 ## Scripts utilitaires (scripts/)
 

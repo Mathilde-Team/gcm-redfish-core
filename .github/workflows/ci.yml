@@ -1,0 +1,80 @@
+# CI du socle Mathilde-Team (SOCLE.md §4). Le job « Qualité (lint, tests) »
+# est un check requis sur main et dev (.github/branch-protection/*.json) :
+# garder son nom. `master` reste listée tant que la branche par défaut n'a
+# pas été renommée en `main` (audit Mathilde-Team/.github#1).
+name: CI
+
+"on":
+  push:
+    branches: [main, dev, master]
+  pull_request:
+    branches: [main, dev, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Qualité (lint, tests)
+    # Runners maison (groupe maison, Ubuntu 20.04, root) ; repli GitHub :
+    # variable RUNS_ON_LINUX = '"ubuntu-latest"'.
+    runs-on: ${{ fromJSON(vars.RUNS_ON_LINUX || '{"group":"maison","labels":["self-hosted","linux"]}') }}
+
+    steps:
+      - name: Checkout du dépôt
+        uses: actions/checkout@v7
+
+      # uv plutôt que setup-python : setup-python ne fournit pas ces
+      # versions pour Ubuntu 20.04 (runners maison), uv si.
+      - name: Installation de uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: Installation de Python 3.12
+        run: |
+          uv venv --python 3.12 .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+          echo "VIRTUAL_ENV=$PWD/.venv" >> "$GITHUB_ENV"
+
+      - name: Lint YAML (yamllint --strict)
+        run: uvx yamllint==1.38.0 --strict -c .yamllint.yaml .
+
+      - name: Syntaxe des scripts Python
+        run: python -m py_compile scripts/*.py
+
+      - name: Installer le paquet
+        run: uv pip install -e ".[dev]"
+
+      # Chaque script de tests/ tourne sous coverage, puis coverage combine et
+      # coverage report lisent le seuil (95 %, lignes + branches) déclaré une
+      # seule fois dans pyproject.toml. Même commande qu'en local.
+      - name: Tests et couverture (seuil lu dans pyproject.toml)
+        run: make test
+
+  compatibilite:
+    # Versions minimales annoncées par pyproject.toml (requires-python >= 3.10).
+    name: Tests Python ${{ matrix.python-version }}
+    runs-on: ${{ fromJSON(vars.RUNS_ON_LINUX || '{"group":"maison","labels":["self-hosted","linux"]}') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - name: Checkout du dépôt
+        uses: actions/checkout@v7
+
+      - name: Installation de uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: Installer Python ${{ matrix.python-version }}
+        run: |
+          uv venv --python ${{ matrix.python-version }} .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+          echo "VIRTUAL_ENV=$PWD/.venv" >> "$GITHUB_ENV"
+
+      - name: Installer le paquet
+        run: uv pip install -e ".[dev]"
+
+      - name: Tests et couverture
+        run: make test
