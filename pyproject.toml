@@ -52,7 +52,16 @@ gcm_redfish_core = ["data/*.json", "data/*.xml", "data/hpe_components/*.json"]
 branch = true
 parallel = true
 source = ["gcm_redfish_core"]
+# Script du socle repris de modele-depot (scripts/check_branch_protection.py),
+# importé par son test pytest via pythonpath ci-dessous : mesuré lui aussi.
+source_pkgs = ["check_branch_protection"]
 
 [tool.coverage.report]
 fail_under = 95
 show_missing = true
+
+# Seul tests/test_check_branch_protection.py passe par pytest (script du socle
+# repris tel quel de modele-depot) ; les autres tests sont des scripts.
+[tool.pytest.ini_options]
+pythonpath = ["scripts"]
+addopts = "-ra"
