@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Client Redfish générique, indépendant du constructeur.
 
 Ce module s'appuie uniquement sur les ressources standard du schéma DMTF
