@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """fetch_dell_catalog.py
 
 À exécuter sur TA machine (pas dans le sandbox Claude, qui n'a pas
