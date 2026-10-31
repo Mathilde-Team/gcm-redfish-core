@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Modèles de données du moteur de dépendances firmware.
 
 Ce module ne dépend ni de GTK ni de Redfish directement : il décrit l'état

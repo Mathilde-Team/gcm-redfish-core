@@ -121,4 +121,6 @@ with RedfishClient("https://192.168.1.100", "admin", "password", verify_ssl=Fals
 
 ## Licence
 
-MIT (voir LICENSE) — à ajuster si tu préfères une autre licence.
+GPL-3.0-or-later (voir LICENSE) — le cœur du plugin Redfish de GNOME
+Connection Manager (Gcm4, GPLv3) : même licence, le « ou toute version
+ultérieure » étant porté par les métadonnées de `pyproject.toml`.
