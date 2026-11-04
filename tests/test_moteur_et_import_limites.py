@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Cas limites du moteur de dépendances, des versions et des importeurs (issue #4).
 
 Complète ``test_engine.py`` et ``test_catalog_import.py`` : règles absentes,

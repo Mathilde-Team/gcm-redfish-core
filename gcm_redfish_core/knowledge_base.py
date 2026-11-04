@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Firmware Knowledge Base (FKB) : règles de dépendances entre firmwares.
 
 Cette base est volontairement séparée du moteur (``dependency_engine.py``)

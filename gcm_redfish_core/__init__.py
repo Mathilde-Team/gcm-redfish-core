@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """gcm_redfish_core — bibliothèque indépendante de GTK.
 
 Contient le client Redfish, l'import de catalogues constructeur (inventaire)

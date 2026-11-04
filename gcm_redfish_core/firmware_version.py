@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Représentation et comparaison de versions de firmware.
 
 Les constructeurs (HPE, Dell, Lenovo) n'utilisent pas un format de version

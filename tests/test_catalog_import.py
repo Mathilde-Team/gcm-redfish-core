@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Valide l'import du catalogue Dell et son branchement sur le moteur de dépendances.
 
 Exécution : python test_catalog_import.py

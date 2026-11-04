@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """analyze_dell_catalog.py
 
 Analyse un catalogue Dell (``Catalog.xml``) complet : classe chaque

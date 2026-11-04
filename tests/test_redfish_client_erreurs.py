@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Chemins d'erreur et de repli de RedfishClient (issue #4).
 
 Complète ``test_redfish_client.py`` : ressources absentes (HTTP 404), champs

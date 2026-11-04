@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Firmware Dependency Engine.
 
 Principe directeur (voir discussion projet) : ne JAMAIS proposer une mise à

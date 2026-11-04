@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Valide RedfishClient contre un faux transport HTTP (aucun BMC réel disponible ici).
 
 Le faux transport simule les réponses standard DMTF Redfish d'un serveur
